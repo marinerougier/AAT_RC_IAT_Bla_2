@@ -24,7 +24,7 @@
         description: 'The HTML string to be displayed.'
       },
       left_category_key: {
-        type: jsPsych.plugins.parameterType.HTML_STRING, 
+        type: jsPsych.plugins.parameterType.HTML_STRING,
         pretty_name: 'Left category key',
         default: 'E',
         description: 'Key press that is associated with the left category label.'
@@ -67,11 +67,11 @@
         pretty_name: 'HTML when wrong',
         default: '<span style="color: red; font-size: 80px">X</span>',
         description: 'The image to display when a user presses the wrong key.'
-      }, 
+      },
       bottom_instructions: {
         type: jsPsych.plugins.parameterType.HTML_STRING,
         pretty_name: 'Bottom instructions',
-        default: '<p>If you press the wrong key, a red X will appear. Press any key to continue.</p>',
+        default: '<p>Si vous appuyez sur la mauvaise touche, un X rouge apparaîtra. Appuyez sur la touche inverse pour continuer.</p>',
         description: 'Instructions shown at the bottom of the page.'
       },
       force_correct_key_press: {
@@ -122,22 +122,22 @@
     html_str += "<div id='trial_left_align' style='position: absolute; top: 18%; left: 20%'>";
 
     if(trial.left_category_label.length == 1) {
-      html_str += "<p>Press <span class='key'>" + trial.left_category_key + "</span> for:<br> " +
+      html_str += "<p>Appuyez sur <span class='key'>" + trial.left_category_key + "</span> pour:<br> " +
       "<span class ='"+ trial.label_category[0] +"'> "+ trial.left_category_label[0].bold() + "</span></p></div>";
     } else {
-      html_str += "<p>Press <span class='key'>" + trial.left_category_key + "</span> for:<br> " +
-      "<span class ='"+ trial.label_category[0] +"'> "+ trial.left_category_label[0].bold() + "</span><br>" + "or<br>" +
+      html_str += "<p>Appuyez sur <span class='key'>" + trial.left_category_key + "</span> pour:<br> " +
+      "<span class ='"+ trial.label_category[0] +"'> "+ trial.left_category_label[0].bold() + "</span><br>" + "ou<br>" +
       "<span class ='"+ trial.label_category[1] +"'> "+ trial.left_category_label[1].bold() + "</span></p></div>";
     }
 
     html_str += "<div id='trial_right_align' style='position: absolute; top: 18%; right: 20%'>";
 
     if(trial.right_category_label.length == 1) {
-      html_str += "<p>Press <span class='key'>" + trial.right_category_key + "</span> for:<br> " +
+      html_str += "<p>Appuyez sur <span class='key'>" + trial.right_category_key + "</span> pour:<br> " +
       "<span class ='"+ trial.label_category[0] +"'> "+ trial.right_category_label[0].bold() + '</span></p></div>';
     } else {
-      html_str += "<p>Press <span class='key'>" + trial.right_category_key + "</span> for:<br> " +
-       "<span class ='"+ trial.label_category[0] +"'> "+ trial.right_category_label[0].bold() + "</span><br>" + "or<br>" +
+      html_str += "<p>Appuyez sur <span class='key'>" + trial.right_category_key + "</span> pour:<br> " +
+      "<span class ='"+ trial.label_category[0] +"'> "+ trial.right_category_label[0].bold() + "</span><br>" + "ou<br>" +
       "<span class ='"+ trial.label_category[1] +"'> "+ trial.right_category_label[1].bold() + "</span></p></div>";
     }
 

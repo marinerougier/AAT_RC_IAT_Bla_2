@@ -66,8 +66,11 @@ if(!is_compatible) {
   // prolific variables
   var prolificID = jsPsych.data.getURLVariable("prolificID");
   if(prolificID == null) {prolificID = "999";}
-  var jspsych_id  = jsPsych.data.getURLVariable("jspsych_id");
-   if(jspsych_id == null) {jspsych_id = "999";}
+  var id  = jsPsych.data.getURLVariable("id");
+   if(id == null) {jspsych_id = "999";}
+
+  var training_cond = jsPsych.data.getURLVariable("training_cond");
+  var control_cond = jsPsych.data.getURLVariable("control_cond");
 
   //var session_id  = jsPsych.randomization.randomID();
 
@@ -1189,6 +1192,10 @@ if(is_compatible) {
       },
     on_finish: function() {
         saving_browser_events(completion = true);
+        jsPsych.data.addProperties({
+        training_cond: training_cond,
+        control_cond: control_cond,
+        });
         window.location.href = "https://app.prolific.co/submissions/complete?cc=11E3E680";
     }
   });
