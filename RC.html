@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>exp</title>
+    <script src="js/jspsych.js"></script>
+    <script src="js/plugins/jspsych-fullscreen.js"></script>
+    <script src="js/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="js/plugins/jspsych-image-keyboard-response.js"></script>
+    <script src="js/plugins/jspsych-html-button-response.js"></script>
+    <script src="js/plugins/jspsych-survey-text.js"></script>
+    <script src="js/plugins/jspsych-survey-likert.js"></script>
+    <script src="js/plugins/jspsych-survey-multi-choice.js"></script>
+    <script src="js/plugins/jspsych-html-mouse-response.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/lodash.min.js"></script>
+    <script src="js/firebase.js"></script>
+    <link href="css/jspsych_RC.css" rel="stylesheet" type="text/css">
+    <style>
+        body {
+            cursor: default;
+        }
+        .rcimg-12 {
+            cursor: pointer;
+        }
+        .rcimg-12 {
+            margin: 10px;
+        }
+        .rcimg-12:hover {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+        .jspsych-content-wrapper {
+            width: 900px;
+            height: 700px;
+        }
+    </style>
+</head>
+
+<body></body>
+
+<script>
+
+    /* Parameters */
+    var numOfPairs = 150 * 6; // Total number of pair images images (inv & ori)
+
+    // var qlink = 'https://uclpsychology.co1.qualtrics.com/jfe/form/SV_3ehqq1xeNEEfP2R';
+    var FBdirectory = 'RCmarine4'; // Firebase directory
+
+
+
+    /* Functions */
+    // Return image link
+    var imgLink = function (imgNum, oriInv) {
+
+        if (oriInv == "inv") {
+            return 'https://marinerougier.github.io/CIs_AAT_Black_Inv/faceInv' + imgNum + '.png?raw=1'
+        } else {
+            return 'https://marinerougier.github.io/CIs_AAT_Black_Ori/faceOri' + imgNum + '.png?raw=1'
+        };
+    };
+
+
+
+    /* Initial variables */
+    var timeline = [];
+    var preloadimages = [];
+    var id = jsPsych.data.getURLVariable("id");
+    var prolificID = jsPsych.data.getURLVariable("prolificID");
+    var training_cond = jsPsych.data.getURLVariable("training_cond");
+    var control_cond = jsPsych.data.getURLVariable("control_cond");
+    
+    /* Generate RC trials */
+
+    var imgsRC = $.map($(Array(numOfPairs)), function (val, i) { return i + 1; }); // generate numerical sequence
+
+    imgsRC.map(function (e) {
+        preloadimages.push(imgLink(e, 'ori'));
+        preloadimages.push(imgLink(e, 'inv'));
+    });
+
+
+
+    var genFacesPerSlide = function (numOfFacesPerTrial, imgs) {
+        numOfFacesPerTrial = numOfFacesPerTrial / 2;
+        var chunkedArray = [];
+        var i, j, trialImgs, chunk = numOfFacesPerTrial;
+
+        for (i = 0, j = imgs.length; i < j; i += chunk) {
+
+            trialImgs = imgs.slice(i, i + chunk);
+
+            var tempOri = [];
+            var tempInv = [];
+
+            trialImgs.map(function (e) {
+                tempOri.push(imgLink(e, 'ori'));
+                tempInv.push(imgLink(e, 'inv'));
+            });
+
+
+
+            trialImgs = _.flattenDeep([tempOri, tempInv]);
+
+            // trialImgs = _.shuffle(trialImgs); // randomize order in slide
+
+            chunkedArray.push({
+                trialImgs
+            });
+        }
+        return chunkedArray;
+    };
+
+
+    var RCstim = genFacesPerSlide(12, imgsRC); // RC fast-12: 250 trials (6 ori + 6 anti = 12  faces per trial)
+
+
+    // EXPERIMENT -----------------------------------------------------------------------------------------------------------------
+    /* Instructions and Fullscreen mode */
+
+    var activateFullscreen = {
+        type: 'fullscreen',
+        fullscreen_mode: true,
+        delay_after: 500,
+        message: "",
+        button_label: "Please click here to activate the fullscreen mode",
+    };
+
+    /* RC instructions */
+
+    var RCinst2 = {
+        type: "html-button-response",
+        post_trial_gap: 300,
+        choices: ['continue'],
+        stimulus: function () {
+            var html = "";
+            html += "<h1>Task 2: Face categorization task</h1>";
+            html += "<p class = 'justify'> In this task, we will present you a series of faces similar to the one presented below. ";
+            html += "At each trial, we will present you 12 faces. ";
+            html += "Note that, again, these faces have been deliberately blurred for anonymity reasons. ";
+            html += "As a result, they will look rather similar to each other, yet they are different.</p>";
+            html += "<img width='200' style='padding: 0px' src='" + imgLink(474, 'ori') + "'>";
+            return html;
+        },
+    };
+
+    var RCinst3 = {
+        type: "html-button-response",
+        post_trial_gap: 300,
+        choices: ['continue'],
+        stimulus: function () {
+            var html = "";
+            html += "<h1>Task 2: Face categorization task</h1>";
+            html += "<p class = 'justify'>At each trial, your task is to choose, among the 12 faces, ";
+            html += "<b>the most Black-looking face</b>. Note that this task is independent from the Video Game task (Task 1): ";
+            html += "<b>You have to choose the face that is the most typical of a Black person in general</b>. ";
+            html += "<p class = 'justify'>Use your mouse to select a face at each trial.</p>";
+            html += "<img width='200' style='padding: 0px' src='" + imgLink(474, 'ori') + "'>";
+            return html;
+        },
+    };
+
+    var RCinst4 = {
+        type: "html-button-response",
+        post_trial_gap: 300,
+        choices: ['start'],
+        stimulus: function () {
+            var html = "";
+            html += "<h1>Task 2: Face categorization task</h1>";
+            html += "<p class = 'justify'>Before you start, please note that: </br></br>";
+            html += "<b>There are no good or bad answers!</b> ";
+            html += "You just have to make a choice as <b>intuitively</b> as possible. ";
+            html += "On average, for each trial, participants take about <b>3 seconds</b> ";
+            html += "to select a face. Please <b>try to maintain a similar response time</b>.</br></br>";
+            html += "In this task, you will have to peform a total of 150 trials.</p>";
+            return html;
+        },
+    };
+
+    /* RC */
+
+    var i = 1;
+    var RC = {
+        timeline_variables: RCstim,
+        randomize_order: true,
+        //sample: {
+        //    type: 'custom',
+        //    fn: function (t) { return [1, 2, 3] }
+        //},
+        data: {
+            task: 'RC',
+        },
+        timeline: [{
+            type: 'html-mouse-response',
+            stimulus: function () {
+                html = "";
+                html += "<p>Select the most <b>Black-looking face</b> </br></br>";
+                jsPsych.timelineVariable('trialImgs', true).map(function (e) {
+                    html += "<img class='rcimg-12' src='" + e + "'>";
+                });
+                html += "</br> Trial: " + i + "/150</br>";
+                i += 1;
+                return html;
+            },
+        }]
+    };
+
+    var RCend = {
+        type: "html-button-response",
+        post_trial_gap: 300,
+        choices: ['continue'],
+        stimulus: function () {
+            var html = "";
+            html += "<p class = 'justify'>Task 2 is completed.</br>";
+            html += "Please, continue to Task 3.</p>";
+            return html;
+        },
+    };
+
+    var ThermoPreamble = '<p class = "justify">Please indicate how warm or cold you feel toward the groups below. ' +
+        'To do so, use the following scale: ' +
+        'from 1 = “Coldest feelings” to 9 = “Warmest feelings”</p>';
+
+    var ThermoScale = ["1</br>Coldest feelings", "2", "3", "4", "5", "6", "7", "8", "9</br>Warmest feelings"];
+
+    var ThermoGrpItems = [
+        'Black people',
+        'White people',
+    ];
+
+
+    ThermoGrpItems = _.shuffle(ThermoGrpItems);
+
+    var questionsThermoGrp = [];
+    ThermoGrpItems.map(function (item) { questionsThermoGrp.push({ prompt: '<i>' + item + '</i>', labels: ThermoScale, required: true }); });
+
+    var ThermoGrp = {
+        type: 'survey-likert',
+        preamble: ThermoPreamble,
+        questions: questionsThermoGrp,
+        post_trial_gap: 300,
+
+        on_load: function () {
+            $(".jspsych-content-wrapper").css("height", "auto");
+            $(".jspsych-content-wrapper").scrollTop(0);
+        },
+
+        on_finish: function (data) {
+            $(".jspsych-content-wrapper").css("height", "700px");
+            console.log(data.responses);
+            var parsed_response = JSON.parse(data.responses);
+            if (ThermoGrpItems[0] == 'White people') {
+                jsPsych.data.addProperties({
+                    ThermoWhite: parsed_response.Q0,
+                    ThermoBlack: parsed_response.Q1,
+                });
+            } else {
+                jsPsych.data.addProperties({
+                    ThermoWhite: parsed_response.Q1,
+                    ThermoBlack: parsed_response.Q0,
+                });
+            }
+            console.log(jsPsych.data);
+        },
+    };
+
+
+    var genderOptions = ['Male', 'Female', 'Other'];
+    var gender = {
+        type: 'survey-multi-choice',
+        questions: [{ prompt: "Please indicate your gender:", options: genderOptions, required: true }],
+        button_label: "continue",
+        on_finish: function (data) {
+            jsPsych.data.addProperties({
+                gender: JSON.parse(data.responses).Q0,
+            });
+            console.log(data);
+        },
+    };
+
+    var age = {
+        timeline: [{
+            type: 'survey-text',
+            questions: [{ prompt: "Please indicate your age:", rows: 1, columns: 10 }],
+            button_label: "continue",
+        }],
+        loop_function: function (data) {
+            var res = data.values()[0].responses;
+            var res = JSON.parse(res).Q0;
+            if (res == "") {
+                alert("Please answer the question");
+                return true;
+            }
+        },
+        on_finish: function (data) {
+            jsPsych.data.addProperties({
+                age: JSON.parse(data.responses).Q0,
+            });
+        },
+    };
+
+    var languageOptions = ['Fluently', 'Very good', 'Good', 'Average', 'Bad', 'Very bad'];
+    var language = {
+        type: 'survey-multi-choice',
+        questions: [{ prompt: "How well do you speak english?", options: languageOptions, required: true }],
+        button_label: "continue",
+        on_finish: function (data) {
+            jsPsych.data.addProperties({
+                language: JSON.parse(data.responses).Q0,
+            });
+            console.log(data);
+        },
+    };
+
+    var RaceOptions = ['American Indian or Alaska Native', 'Asian', 'Black or African American', 'Hispanic or Latino', 'Native Hawaiian or Other Pacific Islander', 'White'];
+    var Race = {
+        type: 'survey-multi-choice',
+        questions: [{ prompt: "Please indicate your racial/ethnic category:", options: RaceOptions, required: true }],
+        button_label: "continue",
+        on_finish: function (data) {
+            jsPsych.data.addProperties({
+                Race: JSON.parse(data.responses).Q0,
+            });
+            console.log(data);
+        },
+    };
+
+    var Prolific_reported = {
+        timeline: [{
+            type: 'survey-text',
+            questions: [{ prompt: 'Please indicate your Prolific ID:', rows: 3, columns: 60 }],
+            button_label: "continue",
+        }],
+        loop_function: function (data) {
+            var res = data.values()[0].responses;
+            var res = JSON.parse(res).Q0;
+            if (res == "") {
+                alert("Please answer the question");
+                return true;
+            }
+        },
+        on_finish: function (data) {
+            jsPsych.data.addProperties({
+                Prolific_reported: JSON.parse(data.responses).Q0,
+            });
+        },
+    };
+
+
+    var goal = {
+        timeline: [{
+            type: 'survey-text',
+            questions: [{ prompt: 'What do you think was the goal of this study ? (2-3 lines max)', rows: 3, columns: 60 }],
+            button_label: "continue",
+        }],
+        loop_function: function (data) {
+            var res = data.values()[0].responses;
+            var res = JSON.parse(res).Q0;
+            if (res == "") {
+                alert("Please answer the question");
+                return true;
+            }
+        },
+        on_finish: function (data) {
+            jsPsych.data.addProperties({
+                goal: JSON.parse(data.responses).Q0,
+            });
+        },
+    };
+
+    var exitFullscreen = {
+        type: 'fullscreen',
+        fullscreen_mode: false,
+        delay_after: 400,
+    };
+
+    var debriefing = '' +
+        '<span style="color:#cc3300; font-weight: bold">Debriefing and survey validation</span></br></br>' +
+        '<p class = "justify">' +
+        'First of all, thank you for your participation! ' +
+        'The aim of this experiment was to test whether the first part of the experiment (i.e., the video game task) ' +
+        'influenced your responses to the second part (i.e., in the categorization task). ' +
+        'Specifically, in the video game task, some participants had to approach one group and to avoid another one, while some other participants just had to categorize the faces (without any approach / avoidance actions). ' +
+        'Our hypothesis is that the approach / avoidance actions performed in the video game task ' +
+        'toward the two groups of faces should have impacted our representation of these two groups: participants should have a more positive ' +
+        'representation of the group associated with approach actions (comparatively to participants who did not perform any approach / avoidance). We measured these two representations in task 2.</br></br>' +
+        'If you have any questions / remarks regarding this experiment, please contact me at:</br>marine.rougier@uclouvain.be</br></br>' +
+        'Here is your completion code for Prolific: <b>52DC7204</b></br></br>' +
+        'Or you can click on the following link: <a href="https://app.prolific.co/submissions/complete?cc=52DC7204">https://app.prolific.co/submissions/complete?cc=52DC7204</a>' +
+        '</p>'
+
+    preloadimages = _.flattenDeep(preloadimages);
+
+
+    /*  ~~~~~~~~~~~~~~~~ TIMELINES  ~~~~~~~~~~~~~~~~ */
+
+    timeline.push(activateFullscreen);
+    timeline.push(RCinst2);
+    timeline.push(RCinst3);
+    timeline.push(RCinst4);
+    timeline.push(RC);
+    timeline.push(RCend);
+    timeline.push(ThermoGrp);
+    timeline.push(gender);
+    timeline.push(age);
+    timeline.push(language);
+    timeline.push(Race);
+    timeline.push(Prolific_reported);
+    timeline.push(goal);
+    timeline.push(exitFullscreen);
+
+    /* start the experiment */
+    jsPsych.init({
+        timeline: _.flattenDeep(timeline),
+        preload_images: preloadimages,
+        max_load_time: 1000 * 500,
+        exclusions: {
+            min_width: 800,
+            min_height: 600,
+        },
+        on_finish: function (data) {
+            $("#jspsych-content").html("<img src='https://i.gifer.com/4V0b.gif'>");
+            
+            /* Initialize Firebase */
+            var config = {
+                apiKey: "AIzaSyBwDr8n-RNCbBOk1lKIxw7AFgslXGcnQzM",
+                databaseURL: "https://marineexpe.firebaseio.com/"
+            };
+
+            firebase.initializeApp(config);
+            var database = firebase.database();
+
+            // if no id provided, generate a new id
+            if (id == null) { id = jsPsych.randomization.randomID(15) };
+
+            /* jsPsych: add data to every trial */
+            jsPsych.data.addProperties({
+                id: id,
+                prolificID: prolificID,
+                training_cond: training_cond,
+                control_cond: control_cond,
+            });
+
+            var dataRC = jsPsych.data.get().filterCustom(function (x) {
+                return x.task == "RC"
+            }).csv();
+
+            /* Send data to Firebase and redirect to Qualtrics */
+            database
+                .ref(FBdirectory + "/" + id + "/")
+                .update({ dataRC })
+                .then(function () {
+                            console.log("Data sent!");
+                            $("#jspsych-content").html(debriefing);
+                            // jsPsych.data.displayData()
+                        });
+        }
+    });
+
+</script>
+
+</html>
