@@ -436,7 +436,7 @@ var fullscreen_trial = {
 var Gene_Instr = {
   type: "html-keyboard-response",
   stimulus:
-    "<h1 class ='custom-title'> Study on face categorization</h1>" +
+    "<h1 class ='custom-title'> Study on categorization</h1>" +
     "<br>" +
     "<p class='instructions'> We are interested in the way people categorize " +
     "others as a function of their face and first name. </p>" +
