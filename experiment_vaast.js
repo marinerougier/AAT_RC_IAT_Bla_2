@@ -878,7 +878,7 @@ switch(training_cond) {
                   vaast_instructions_2_bis_vaast,
                   vaast_instructions_3_vaast,
                   vaast_instructions_4_vaast,
-                  vaast_training,
+                  //vaast_training,
                   vaast_instructions_end);
     break;
   case "avblack":
@@ -888,7 +888,7 @@ switch(training_cond) {
                   vaast_instructions_2_bis_vaast,
                   vaast_instructions_3_vaast,
                   vaast_instructions_4_vaast,
-                  vaast_training,
+                  //vaast_training,
                   vaast_instructions_end);
     break;
   case "cont":
@@ -897,7 +897,7 @@ switch(training_cond) {
                   vaast_instructions_2_cont,
                   vaast_instructions_3_cont,
                   vaast_instructions_4_cont,
-                  vaast_control,
+                  //vaast_control,
                   vaast_instructions_end);
     break;
 }
@@ -938,7 +938,7 @@ if (is_compatible) {
     },
     on_finish: function () {
       saving_browser_events(completion = true);
-      window.location.href = "https://marinerougier.github.io/RC_AAT_KWKM/RC.html?id=" + id + "&prolificID=" + 
+      window.location.href = "https://marinerougier.github.io/AAT_RC_IAT_Bla_2/RC.html?id=" + id + "&prolificID=" + 
       prolificID + "&training_cond=" + training_cond + "&control_cond=" + control_cond;
     }
   });
