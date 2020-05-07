@@ -45,7 +45,7 @@
     var numOfPairs = 150 * 6; // Total number of pair images images (inv & ori)
 
     // var qlink = 'https://uclpsychology.co1.qualtrics.com/jfe/form/SV_3ehqq1xeNEEfP2R';
-    var FBdirectory = 'RCmarine4'; // Firebase directory
+    var FBdirectory = 'RC_Black'; // Firebase directory
 
 
 
@@ -217,177 +217,11 @@
         },
     };
 
-    var ThermoPreamble = '<p class = "justify">Please indicate how warm or cold you feel toward the groups below. ' +
-        'To do so, use the following scale: ' +
-        'from 1 = “Coldest feelings” to 9 = “Warmest feelings”</p>';
-
-    var ThermoScale = ["1</br>Coldest feelings", "2", "3", "4", "5", "6", "7", "8", "9</br>Warmest feelings"];
-
-    var ThermoGrpItems = [
-        'Black people',
-        'White people',
-    ];
-
-
-    ThermoGrpItems = _.shuffle(ThermoGrpItems);
-
-    var questionsThermoGrp = [];
-    ThermoGrpItems.map(function (item) { questionsThermoGrp.push({ prompt: '<i>' + item + '</i>', labels: ThermoScale, required: true }); });
-
-    var ThermoGrp = {
-        type: 'survey-likert',
-        preamble: ThermoPreamble,
-        questions: questionsThermoGrp,
-        post_trial_gap: 300,
-
-        on_load: function () {
-            $(".jspsych-content-wrapper").css("height", "auto");
-            $(".jspsych-content-wrapper").scrollTop(0);
-        },
-
-        on_finish: function (data) {
-            $(".jspsych-content-wrapper").css("height", "700px");
-            console.log(data.responses);
-            var parsed_response = JSON.parse(data.responses);
-            if (ThermoGrpItems[0] == 'White people') {
-                jsPsych.data.addProperties({
-                    ThermoWhite: parsed_response.Q0,
-                    ThermoBlack: parsed_response.Q1,
-                });
-            } else {
-                jsPsych.data.addProperties({
-                    ThermoWhite: parsed_response.Q1,
-                    ThermoBlack: parsed_response.Q0,
-                });
-            }
-            console.log(jsPsych.data);
-        },
-    };
-
-
-    var genderOptions = ['Male', 'Female', 'Other'];
-    var gender = {
-        type: 'survey-multi-choice',
-        questions: [{ prompt: "Please indicate your gender:", options: genderOptions, required: true }],
-        button_label: "continue",
-        on_finish: function (data) {
-            jsPsych.data.addProperties({
-                gender: JSON.parse(data.responses).Q0,
-            });
-            console.log(data);
-        },
-    };
-
-    var age = {
-        timeline: [{
-            type: 'survey-text',
-            questions: [{ prompt: "Please indicate your age:", rows: 1, columns: 10 }],
-            button_label: "continue",
-        }],
-        loop_function: function (data) {
-            var res = data.values()[0].responses;
-            var res = JSON.parse(res).Q0;
-            if (res == "") {
-                alert("Please answer the question");
-                return true;
-            }
-        },
-        on_finish: function (data) {
-            jsPsych.data.addProperties({
-                age: JSON.parse(data.responses).Q0,
-            });
-        },
-    };
-
-    var languageOptions = ['Fluently', 'Very good', 'Good', 'Average', 'Bad', 'Very bad'];
-    var language = {
-        type: 'survey-multi-choice',
-        questions: [{ prompt: "How well do you speak english?", options: languageOptions, required: true }],
-        button_label: "continue",
-        on_finish: function (data) {
-            jsPsych.data.addProperties({
-                language: JSON.parse(data.responses).Q0,
-            });
-            console.log(data);
-        },
-    };
-
-    var RaceOptions = ['American Indian or Alaska Native', 'Asian', 'Black or African American', 'Hispanic or Latino', 'Native Hawaiian or Other Pacific Islander', 'White'];
-    var Race = {
-        type: 'survey-multi-choice',
-        questions: [{ prompt: "Please indicate your racial/ethnic category:", options: RaceOptions, required: true }],
-        button_label: "continue",
-        on_finish: function (data) {
-            jsPsych.data.addProperties({
-                Race: JSON.parse(data.responses).Q0,
-            });
-            console.log(data);
-        },
-    };
-
-    var Prolific_reported = {
-        timeline: [{
-            type: 'survey-text',
-            questions: [{ prompt: 'Please indicate your Prolific ID:', rows: 3, columns: 60 }],
-            button_label: "continue",
-        }],
-        loop_function: function (data) {
-            var res = data.values()[0].responses;
-            var res = JSON.parse(res).Q0;
-            if (res == "") {
-                alert("Please answer the question");
-                return true;
-            }
-        },
-        on_finish: function (data) {
-            jsPsych.data.addProperties({
-                Prolific_reported: JSON.parse(data.responses).Q0,
-            });
-        },
-    };
-
-
-    var goal = {
-        timeline: [{
-            type: 'survey-text',
-            questions: [{ prompt: 'What do you think was the goal of this study ? (2-3 lines max)', rows: 3, columns: 60 }],
-            button_label: "continue",
-        }],
-        loop_function: function (data) {
-            var res = data.values()[0].responses;
-            var res = JSON.parse(res).Q0;
-            if (res == "") {
-                alert("Please answer the question");
-                return true;
-            }
-        },
-        on_finish: function (data) {
-            jsPsych.data.addProperties({
-                goal: JSON.parse(data.responses).Q0,
-            });
-        },
-    };
-
     var exitFullscreen = {
         type: 'fullscreen',
         fullscreen_mode: false,
         delay_after: 400,
     };
-
-    var debriefing = '' +
-        '<span style="color:#cc3300; font-weight: bold">Debriefing and survey validation</span></br></br>' +
-        '<p class = "justify">' +
-        'First of all, thank you for your participation! ' +
-        'The aim of this experiment was to test whether the first part of the experiment (i.e., the video game task) ' +
-        'influenced your responses to the second part (i.e., in the categorization task). ' +
-        'Specifically, in the video game task, some participants had to approach one group and to avoid another one, while some other participants just had to categorize the faces (without any approach / avoidance actions). ' +
-        'Our hypothesis is that the approach / avoidance actions performed in the video game task ' +
-        'toward the two groups of faces should have impacted our representation of these two groups: participants should have a more positive ' +
-        'representation of the group associated with approach actions (comparatively to participants who did not perform any approach / avoidance). We measured these two representations in task 2.</br></br>' +
-        'If you have any questions / remarks regarding this experiment, please contact me at:</br>marine.rougier@uclouvain.be</br></br>' +
-        'Here is your completion code for Prolific: <b>52DC7204</b></br></br>' +
-        'Or you can click on the following link: <a href="https://app.prolific.co/submissions/complete?cc=52DC7204">https://app.prolific.co/submissions/complete?cc=52DC7204</a>' +
-        '</p>'
 
     preloadimages = _.flattenDeep(preloadimages);
 
@@ -400,13 +234,6 @@
     timeline.push(RCinst4);
     timeline.push(RC);
     timeline.push(RCend);
-    timeline.push(ThermoGrp);
-    timeline.push(gender);
-    timeline.push(age);
-    timeline.push(language);
-    timeline.push(Race);
-    timeline.push(Prolific_reported);
-    timeline.push(goal);
     timeline.push(exitFullscreen);
 
     /* start the experiment */
@@ -451,7 +278,7 @@
                 .update({ dataRC })
                 .then(function () {
                             console.log("Data sent!");
-                    window.location.href = "https://marinerougier.github.io/AAT_RC_IAT_Bla_2/index_IAT.html?id=" + id + "&prolificID=" + 
+                    window.location.href = "https://marinerougier.github.io/AAT_RC_IAT_Bla_2/index_iat.html?id=" + id + "&prolificID=" + 
       prolificID + "&training_cond=" + training_cond + "&control_cond=" + control_cond;
                         });
         }

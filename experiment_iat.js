@@ -1104,21 +1104,23 @@ var iat_instructions_2 = {
   var debriefing = {
     type: "html-keyboard-response",
     stimulus:
-      "<h1 class ='custom-title'>Debriefing and survey validation</h1>" +
+      "<h1 class ='custom-title'>Debriefing and study validation</h1>" +
       "<p class='instructions'>First of all, thank you for your participation!" +
       " The aim of this experiment was to test whether the first part of the experiment (i.e., the video game task) " +
-      "influenced your responses to the second part (i.e., in the categorization task)." +
+      "influenced your responses to the second part (i.e., in the face and first name categorization tasks)." +
       "</p>" +
-      "<p class='instructions'>Specifically, in the video game task, some participants had to approach one group and to avoid another one, " +
-      "while some other participants just had to categorize the faces (without any approach/avoidance actions)." +
+      "<p class='instructions'>Specifically, in the video game task, some participants had to approach Black faces and to avoid White faces, " +
+      "some other participants had to perform the reverse actions (approaching White faces and avoiding Black faces), and finally, some other participants " + 
+      "just had to categorize the two groups faces (without any approach/avoidance actions)." +
       "Our hypothesis is that the approach/avoidance actions performed in the video game task toward the two groups of faces should " + 
-      "have impacted our representation of these two groups: participants should have a more positive " +
-      "representation of the group associated with approach actions (comparatively to participants who did not perform any approach/avoidance)." +
-      "We measured these two representations in task 2. </p>" +
+      "have impacted our representation of these two groups: participants who approached Black faces should have a more positive " +
+      "representation of this group (comparatively to participants who avoided Black faces or did not perform any approach/avoidance)." +
+      "We measured these two representations in task 2. Task 3 measured the implicit evaluation of these two groups. Our hypotheses were the same " + 
+      "with a more positive evaluation of Black people in the condition where participants approached Black faces and avoided White faces (compared to the two others).</p>" +
       "<p class='instructions'>If you have any questions/remarks regarding this experiment, please contact me at: marine.rougier@uclouvain.be </p>" +
-      " Here is your completion code for Prolific: <b>52DC7204</b></p>" +
+      " You can copy/paste the completion code for Prolific <b>11E3E680</b> or you can press the space bar to be automatically redirected to the study validation.</p>" +
       "<p class = 'continue-instructions'>Press <span class='key'>space</span>" +
-      " to continue.</p>",
+      " to continue to the study validation.</p>",
     choices: [32]
   };
 
@@ -1143,15 +1145,15 @@ timeline.push(
 timeline.push(iat_instructions_1,
               iat_instructions_1_1,
               iat_instructions_block_1, 
-              //iat_block_1,
+              iat_block_1,
               iat_instructions_block_2, 
-              //iat_block_2,
+              iat_block_2,
               iat_instructions_block_3, 
-              //iat_block_3_test,
+              iat_block_3_test,
               iat_instructions_block_4, 
-              //iat_block_4,
+              iat_block_4,
               iat_instructions_block_5, 
-              //iat_block_5_test,
+              iat_block_5_test,
               iat_instructions_2);
 
 timeline.push(showing_cursor);

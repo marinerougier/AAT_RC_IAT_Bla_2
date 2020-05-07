@@ -878,7 +878,7 @@ switch(training_cond) {
                   vaast_instructions_2_bis_vaast,
                   vaast_instructions_3_vaast,
                   vaast_instructions_4_vaast,
-                  //vaast_training,
+                  vaast_training,
                   vaast_instructions_end);
     break;
   case "avblack":
@@ -888,7 +888,7 @@ switch(training_cond) {
                   vaast_instructions_2_bis_vaast,
                   vaast_instructions_3_vaast,
                   vaast_instructions_4_vaast,
-                  //vaast_training,
+                  vaast_training,
                   vaast_instructions_end);
     break;
   case "cont":
@@ -897,7 +897,7 @@ switch(training_cond) {
                   vaast_instructions_2_cont,
                   vaast_instructions_3_cont,
                   vaast_instructions_4_cont,
-                  //vaast_control,
+                  vaast_control,
                   vaast_instructions_end);
     break;
 }
