@@ -71,7 +71,7 @@
       bottom_instructions: {
         type: jsPsych.plugins.parameterType.HTML_STRING,
         pretty_name: 'Bottom instructions',
-        default: '<p>If you press the wrong key, a red X will appear. Press any key to continue.</p>',
+        default: '<p>If you press the wrong key, a red X will appear. Press the other key to continue.</p>',
         description: 'Instructions shown at the bottom of the page.'
       },
       force_correct_key_press: {
