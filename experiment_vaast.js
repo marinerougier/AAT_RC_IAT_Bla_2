@@ -443,14 +443,14 @@ var Gene_Instr = {
     "<p class='instructions'>In this study, you will have to " +
     "perform three tasks: " +
     "<br>" +
-    "- Task 1: The Video Game task (approx. 10-15 min)" +
+    "- Task 1: The Video Game task (approx. 13 min)" +
     "<br>" +
     "- Task 2: The face categorization task (approx. 7 min)" +
     "<br>" +
-    "- Task 3: The first name categorization task (approx. 7 min)" +
+    "- Task 3: The first name categorization task (approx. 5 min)" +
     "<br>" +
     "<br>" +
-    "To finish, you will have to answer some questions (approx. 2 min). </p>" +
+    "To finish, you will have to answer some questions (approx. 1 min). </p>" +
     "<br>" +
     "<p class = 'continue-instructions'>Press <strong>space</strong> to" +
     " continue.</p>",
@@ -480,8 +480,8 @@ var vaast_instructions_2_vaast = {
   stimulus:
     "<h1 class ='custom-title'> Task 1: Video Game task</h1>" +
     "<p class='instructions'>A series of faces will be displayed in this environment. " +
-    "Your task will be to categorize the faces (by moving forward or backward) as fast as possible. <br> <br>" +
-    "Specifically, you will have to <b>categorize the faces based on their race (Black vs. White).</b> " +
+    "Your task is to categorize the faces (by moving forward or backward) as fast as possible. <br> <br>" +
+    "Specifically, you have to <b>categorize the faces based on their race (Black vs. White).</b> " +
     "More instructions will follow.</p>" +
     "<p class='instructions'>Note that these faces have been deliberately blurred. " +
     "Here are two examples of faces that will be displayed:</p>" +
@@ -500,7 +500,7 @@ var vaast_instructions_2_bis_vaast = {
   type: "html-keyboard-response",
   stimulus:
     "<h1 class ='custom-title'> Task 1: Video Game task</h1>" +
-    "<p class='instructions'>To move forward or backward, you will use the following keys of your keyboard:" +
+    "<p class='instructions'>To move forward or backward, use the following keys of your keyboard:" +
     "<br>" +
     "<br>" +
     "<img src = 'media/keyboard-vaastt.png'>" +
@@ -534,7 +534,7 @@ var vaast_instructions_4_vaast = {
   type: "html-keyboard-response",
   stimulus:
     "<h1 class ='custom-title'> Task 1: Video Game task</h1>" +
-    "<p class='instructions'>More precisely, you will have to: " +
+    "<p class='instructions'>More precisely, you have to: " +
     "<ul class='instructions'>" +
     "<li><strong>APPROACH " + group_to_approach + " people </strong></li>" +
     "<strong>by pressing the MOVE FORWARD key (namely, the E key) </strong>" +
@@ -574,8 +574,8 @@ var vaast_instructions_2_cont = {
   stimulus:
     "<h1 class ='custom-title'> Task 1: Video Game task</h1>" +
     "<p class='instructions'>A series of faces will be displayed in this environment. " +
-    "Your task will be to categorize the faces (by pressing the E key or the I key of your keyboard) as fast as possible. <br> <br>" +
-    "Specifically, you will have to <b>categorize the faces based on their race (Black vs. White).</b> " +
+    "Your task is to categorize the faces (by pressing the E key or the I key of your keyboard) as fast as possible. <br> <br>" +
+    "Specifically, you have to <b>categorize the faces based on their race (Black vs. White).</b> " +
     "More instructions will follow.</p>" +
     "<p class='instructions'>Note that these faces have been deliberately blurred. " +
     "Here are two examples of faces that will be displayed:</p>" +
@@ -610,7 +610,7 @@ var vaast_instructions_4_cont = {
   type: "html-keyboard-response",
   stimulus:
     "<h1 class ='custom-title'> Task 1: Video Game task</h1>" +
-    "<p class='instructions'>More precisely, you will have to: " +
+    "<p class='instructions'>More precisely, you have to: " +
     "<ul class='instructions'>" +
     "<li><strong>Press the E key for " + group_to_approach + " people </strong></li>" +
     "<li><strong>Press the I key for " + group_to_avoid + " people </strong></li>" +

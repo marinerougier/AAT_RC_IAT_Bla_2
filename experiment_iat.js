@@ -70,9 +70,9 @@ if(!is_compatible) {
    if(id == null) {id = "999";}
 
   var training_cond = jsPsych.data.getURLVariable("training_cond");
+  if(training_cond == null) {training_cond = "999";}
   var control_cond = jsPsych.data.getURLVariable("control_cond");
-
-  //var session_id  = jsPsych.randomization.randomID();
+  if(control_cond == null) {control_cond = "999";}
 
   // connection status ---------------------------------------------------------------------
   // This section ensure that we don't lose data. Anytime the 
@@ -148,6 +148,8 @@ var showing_cursor = {
       .push()
       .set({id: id,
           prolificID: prolificID,
+          training_cond: training_cond,
+          control_cond: control_cond,
           iat_good_side: iat_good,
           iat_black_1_side: iat_black_1,
           timestamp: firebase.database.ServerValue.TIMESTAMP,
@@ -161,6 +163,8 @@ var showing_cursor = {
      .set({id: id,
       prolificID: prolificID,
       timestamp: firebase.database.ServerValue.TIMESTAMP,
+      training_cond: training_cond,
+      control_cond: control_cond,
       iat_good_side: iat_good,
       iat_black_1_side: iat_black_1,
       completion: completion,
@@ -202,8 +206,8 @@ var sample_n_iat = function(list, n) {
 // Switching to fullscreen --------------------------------------------------------------
 var fullscreen_trial = {
   type: 'fullscreen',
-  message:  'To start Task 3, please switch again to full screen </br></br>',
-  button_label: 'Switch to fullscreen',
+  message:  ' ',
+  button_label: 'Please click here to start Task 3',
   fullscreen_mode: true
 }
 
@@ -330,7 +334,7 @@ var iat_instructions_1 = {
     " into groups as fast as you can using the keyboard. In the following screen you will be presented" +
     " a list of category labels and the items that belong to each of these categories." +
     "</p>" +
-    "<p class='instructions'>As you will see, you will have to sort" +
+    "<p class='instructions'>As you will see, you have to sort" +
     " words depending on whether these ones are good vs. bad" +
     " and first names depending on whether these ones are usually associated with Black people vs. White people.</p>" +
     "<h3 class='instructions'>Instructions</h3>" +
@@ -349,7 +353,7 @@ var iat_instructions_1_1 = {
   type: "html-keyboard-response",
   stimulus:
     "<h1 class ='custom-title'> Task 3: First name categorization task </h1>" +
-    "<p class='instructions'><center>Here are the four categories and the items belonging to each category</center></p>" +
+    "<p class='instructions'><center>Here are the four categories and the items belonging to each category:</center></p>" +
     "<table>" +
       "<tr>" +
         "<th width='200px'>Category</th>" +
@@ -404,7 +408,7 @@ var iat_instructions_block_1 = {
       "will appear one-by-one in the middle of the screen. " +
       "When the item belongs to a category on the left, press the <span class='key'>E</span> key; when the item " +
       "belongs to a category on the right, press the <span class='key'>I</span> key. Items belong to only one category. " +
-      "If you make an error, an X will appear – fix the error by hitting the other key." +
+      "If you make an error, an X will appear – fix the error by pressing the other key." +
     "</p>" +
     "<p class='instructions'>" +
       "This is a timed sorting task. GO AS FAST AS YOU CAN while making as few mistakes as possible. " +
@@ -438,7 +442,7 @@ var iat_instructions_block_2 = {
       "When the items belong to a category to the left, press the <span class='key'>E</span> key; " +
       "when the item belongs to a category on the right, press the <span class='key'>I</span> key. " +
       "Items belong to only one category. " +
-      "An X will appear after an error – fix the error by hitting the other key. " +
+      "An X will appear after an error – fix the error by pressing the other key. " +
       "GO AS FAST AS YOU CAN. " +
     "</p>" +
   "</div> " +
@@ -472,7 +476,7 @@ var iat_instructions_block_3 = {
     "The <span class='black-white'>green</span> and <span class='good-bad'>black</span> labels " +
     "and items may help to identify the appropriate category. " +
     "Use the <span class='key'>E</span> and <span class='key'>I</span> keys to categorize " +
-    "items into the four groups left and right, and correct errors by hitting the other key." +
+    "items into the four groups left and right, and correct errors by pressing the other key." +
     "</p>" +
   "</div> " +
   "<br />" +
@@ -505,7 +509,7 @@ var iat_instructions_block_3_test = {
     "The <span class='black-white'>green</span> and <span class='good-bad'>black</span> labels " +
     "and items may help to identify the appropriate category. " +
     "Use the <span class='key'>E</span> and <span class='key'>I</span> keys to categorize " +
-    "items into the four groups left and right, and correct errors by hitting the other key." +
+    "items into the four groups left and right, and correct errors by pressing the other key." +
     "</p>" +
   "</div> " +
   "<br />" +
@@ -536,7 +540,7 @@ var iat_instructions_block_4 = {
     "<p class='instructions'>" +
       "Use the <span class='key'>E</span> and <span class='key'>I</span> keys " +
       "to categorize items left and right, and correct error " +
-      "by hitting the other key." +
+      "by pressing the other key." +
     "</p>" +
   "</div> " +
   "<br>" +
@@ -568,7 +572,7 @@ var iat_instructions_block_5 = {
     "<p class='instructions'>" +
       "Use the <span class='key'>E</span> and <span class='key'>I</span> keys " +
       "to categorize items into the four groups left and right, and correct error " +
-      "by hitting the other key." +
+      "by pressing the other key." +
     "</p>" +
   "</div> " +
   "<br />" +
@@ -601,7 +605,7 @@ var iat_instructions_block_5_test = {
     "The <span class='black-white'>green</span> and <span class='good-bad'>black</span> labels " +
     "and items may help to identify the appropriate category. " +
     "Use the <span class='key'>E</span> and <span class='key'>I</span> keys to categorize " +
-    "items into the four groups left and right, and correct errors by hitting the other key." +
+    "items into the four groups left and right, and correct errors by pressing the other key." +
     "</p>" +
   "</div> " +
   "<br />" +
@@ -613,234 +617,237 @@ var iat_instructions_block_5_test = {
 // iat - stimuli ------------------------------------------------------------------------
 
 var iat_block_1_stim = [
-  {category: "black-white", stimulus: "Lerone",    stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Theo",      stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Leroy",     stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Rasaan",    stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Darnell",   stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Torrance",  stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Lamar",     stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Lionel",    stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Rashaun",   stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Tyree",     stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Deion",     stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Lamont",    stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Terrence",  stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Tyrone",    stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Everol",    stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Lerone",    stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Theo",      stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Leroy",     stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Rasaan",    stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Darnell",   stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Torrance",  stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Lamar",     stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Lionel",    stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Rashaun",   stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Tyree",     stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Deion",     stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Lamont",    stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Terrence",  stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Tyrone",    stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Everol",    stim_key_association: black_side_1st},
 
-  {category: "black-white", stimulus: "Harry",    stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Josh",     stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Roger",    stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Alan",     stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Frank",    stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Justin",   stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Ryan",     stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Andrew",   stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Fred",     stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Jack",     stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Matthew",  stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Stephen",  stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Greg",     stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Jed",      stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Paul",     stim_key_association: white_side_1st}
+  {category: "black-white", group: "White", stimulus: "Harry",    stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Josh",     stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Roger",    stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Alan",     stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Frank",    stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Justin",   stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Ryan",     stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Andrew",   stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Fred",     stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Jack",     stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Matthew",  stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Stephen",  stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Greg",     stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Jed",      stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Paul",     stim_key_association: white_side_1st}
 ]
 
 var iat_block_2_stim = [
-  {category: "good-bad", stimulus: "Caress",         stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Freedom",        stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Health",         stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Love",           stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Peace",          stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Cheer",          stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Friend",         stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Heaven",         stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Loyal",          stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Pleasure",       stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Diamond",        stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Gentle",         stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Honest",         stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Lucky",          stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Rainbow",        stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Caress",         stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Freedom",        stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Health",         stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Love",           stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Peace",          stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Cheer",          stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Friend",         stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Heaven",         stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Loyal",          stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Pleasure",       stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Diamond",        stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Gentle",         stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Honest",         stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Lucky",          stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Rainbow",        stim_key_association: good_side},
 
-  {category: "good-bad", stimulus: "Abuse",          stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Crash",          stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Filth",          stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Murder",         stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Sickness",       stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Accident",       stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Death",          stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Grief",          stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Poison",         stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Stink",          stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Assault",        stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Disaster",       stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Hatred",         stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Pollute",        stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Tragedy",        stim_key_association: bad_side}
+  {category: "good-bad", group: "Negative", stimulus: "Abuse",          stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Crash",          stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Filth",          stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Murder",         stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Sickness",       stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Accident",       stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Death",          stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Grief",          stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Poison",         stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Stink",          stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Assault",        stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Disaster",       stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Hatred",         stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Pollute",        stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Tragedy",        stim_key_association: bad_side}
 ]
 
 var iat_block_3_stim = [
- {category: "good-bad", stimulus: "Caress",         stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Freedom",        stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Health",         stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Love",           stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Peace",          stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Cheer",          stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Friend",         stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Heaven",         stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Loyal",          stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Pleasure",       stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Diamond",        stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Gentle",         stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Honest",         stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Lucky",          stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Rainbow",        stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Abuse",          stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Crash",          stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Filth",          stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Murder",         stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Sickness",       stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Accident",       stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Death",          stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Grief",          stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Poison",         stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Stink",          stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Assault",        stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Disaster",       stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Hatred",         stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Pollute",        stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Tragedy",        stim_key_association: bad_side},
-  {category: "black-white", stimulus: "Lerone",    stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Theo",      stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Leroy",     stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Rasaan",    stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Darnell",   stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Torrance",  stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Lamar",     stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Lionel",    stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Rashaun",   stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Tyree",     stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Deion",     stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Lamont",    stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Terrence",  stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Tyrone",    stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Everol",    stim_key_association: black_side_1st},
-  {category: "black-white", stimulus: "Harry",     stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Josh",     stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Roger",    stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Alan",     stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Frank",    stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Justin",   stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Ryan",     stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Andrew",   stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Fred",     stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Jack",     stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Matthew",  stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Stephen",  stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Greg",     stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Jed",      stim_key_association: white_side_1st},
-  {category: "black-white", stimulus: "Paul",     stim_key_association: white_side_1st}
+  {category: "good-bad", group: "Positive", stimulus: "Caress",         stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Freedom",        stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Health",         stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Love",           stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Peace",          stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Cheer",          stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Friend",         stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Heaven",         stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Loyal",          stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Pleasure",       stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Diamond",        stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Gentle",         stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Honest",         stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Lucky",          stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Rainbow",        stim_key_association: good_side},
+
+  {category: "good-bad", group: "Negative", stimulus: "Abuse",          stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Crash",          stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Filth",          stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Murder",         stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Sickness",       stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Accident",       stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Death",          stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Grief",          stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Poison",         stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Stink",          stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Assault",        stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Disaster",       stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Hatred",         stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Pollute",        stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Tragedy",        stim_key_association: bad_side},
+
+  {category: "black-white", group: "Black", stimulus: "Lerone",    stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Theo",      stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Leroy",     stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Rasaan",    stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Darnell",   stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Torrance",  stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Lamar",     stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Lionel",    stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Rashaun",   stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Tyree",     stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Deion",     stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Lamont",    stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Terrence",  stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Tyrone",    stim_key_association: black_side_1st},
+  {category: "black-white", group: "Black", stimulus: "Everol",    stim_key_association: black_side_1st},
+
+  {category: "black-white", group: "White", stimulus: "Harry",    stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Josh",     stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Roger",    stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Alan",     stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Frank",    stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Justin",   stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Ryan",     stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Andrew",   stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Fred",     stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Jack",     stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Matthew",  stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Stephen",  stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Greg",     stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Jed",      stim_key_association: white_side_1st},
+  {category: "black-white", group: "White", stimulus: "Paul",     stim_key_association: white_side_1st}
 ]
 
 var iat_block_4_stim = [
-  {category: "black-white", stimulus: "Lerone",    stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Theo",      stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Leroy",     stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Rasaan",    stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Darnell",   stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Torrance",  stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Lamar",     stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Lionel",    stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Rashaun",   stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Tyree",     stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Deion",     stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Lamont",    stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Terrence",  stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Tyrone",    stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Everol",    stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Lerone",    stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Theo",      stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Leroy",     stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Rasaan",    stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Darnell",   stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Torrance",  stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Lamar",     stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Lionel",    stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Rashaun",   stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Tyree",     stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Deion",     stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Lamont",    stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Terrence",  stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Tyrone",    stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Everol",    stim_key_association: black_side_2nd},
 
-  {category: "black-white", stimulus: "Harry",    stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Josh",     stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Roger",    stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Alan",     stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Frank",    stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Justin",   stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Ryan",     stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Andrew",   stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Fred",     stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Jack",     stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Matthew",  stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Stephen",  stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Greg",     stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Jed",      stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Paul",     stim_key_association: white_side_2nd}
+  {category: "black-white", group: "White", stimulus: "Harry",    stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Josh",     stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Roger",    stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Alan",     stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Frank",    stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Justin",   stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Ryan",     stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Andrew",   stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Fred",     stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Jack",     stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Matthew",  stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Stephen",  stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Greg",     stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Jed",      stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Paul",     stim_key_association: white_side_2nd}
 ]
 
 var iat_block_5_stim = [
-  {category: "good-bad", stimulus: "Caress",         stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Freedom",        stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Health",         stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Love",           stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Peace",          stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Cheer",          stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Friend",         stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Heaven",         stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Loyal",          stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Pleasure",       stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Diamond",        stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Gentle",         stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Honest",         stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Lucky",          stim_key_association: good_side},
-  {category: "good-bad", stimulus: "Rainbow",        stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Caress",         stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Freedom",        stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Health",         stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Love",           stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Peace",          stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Cheer",          stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Friend",         stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Heaven",         stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Loyal",          stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Pleasure",       stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Diamond",        stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Gentle",         stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Honest",         stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Lucky",          stim_key_association: good_side},
+  {category: "good-bad", group: "Positive", stimulus: "Rainbow",        stim_key_association: good_side},
 
-  {category: "good-bad", stimulus: "Abuse",          stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Crash",          stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Filth",          stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Murder",         stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Sickness",       stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Accident",       stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Death",          stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Grief",          stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Poison",         stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Stink",          stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Assault",        stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Disaster",       stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Hatred",         stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Pollute",        stim_key_association: bad_side},
-  {category: "good-bad", stimulus: "Tragedy",        stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Abuse",          stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Crash",          stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Filth",          stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Murder",         stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Sickness",       stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Accident",       stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Death",          stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Grief",          stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Poison",         stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Stink",          stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Assault",        stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Disaster",       stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Hatred",         stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Pollute",        stim_key_association: bad_side},
+  {category: "good-bad", group: "Negative", stimulus: "Tragedy",        stim_key_association: bad_side},
 
-  {category: "black-white", stimulus: "Lerone",    stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Theo",      stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Leroy",     stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Rasaan",    stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Darnell",   stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Torrance",  stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Lamar",     stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Lionel",    stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Rashaun",   stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Tyree",     stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Deion",     stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Lamont",    stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Terrence",  stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Tyrone",    stim_key_association: black_side_2nd},
-  {category: "black-white", stimulus: "Everol",    stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Lerone",    stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Theo",      stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Leroy",     stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Rasaan",    stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Darnell",   stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Torrance",  stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Lamar",     stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Lionel",    stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Rashaun",   stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Tyree",     stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Deion",     stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Lamont",    stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Terrence",  stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Tyrone",    stim_key_association: black_side_2nd},
+  {category: "black-white", group: "Black", stimulus: "Everol",    stim_key_association: black_side_2nd},
 
-  {category: "black-white", stimulus: "Harry",    stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Josh",     stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Roger",    stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Alan",     stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Frank",    stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Justin",   stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Ryan",     stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Andrew",   stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Fred",     stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Jack",     stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Matthew",  stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Stephen",  stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Greg",     stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Jed",      stim_key_association: white_side_2nd},
-  {category: "black-white", stimulus: "Paul",     stim_key_association: white_side_2nd}
+  {category: "black-white", group: "White", stimulus: "Harry",    stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Josh",     stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Roger",    stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Alan",     stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Frank",    stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Justin",   stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Ryan",     stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Andrew",   stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Fred",     stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Jack",     stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Matthew",  stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Stephen",  stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Greg",     stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Jed",      stim_key_association: white_side_2nd},
+  {category: "black-white", group: "White", stimulus: "Paul",     stim_key_association: white_side_2nd}
 ]
 
 
@@ -863,7 +870,8 @@ var iat_block_1 = {
         iat_block: 1,
         iat_type: 'practice',
         iat_label_left:  block_1_left_label,
-        iat_label_right: block_1_right_label
+        iat_label_right: block_1_right_label,
+        group: jsPsych.timelineVariable('group')
       }
     },
     save_iat_trial
@@ -890,7 +898,8 @@ var iat_block_2 = {
         iat_block: 2,
         iat_type: 'practice',
         iat_label_left:  block_2_left_label,
-        iat_label_right: block_2_right_label
+        iat_label_right: block_2_right_label,
+        group: jsPsych.timelineVariable('group')
          }
     },
     save_iat_trial
@@ -918,7 +927,8 @@ var iat_block_3_test = {
         iat_type: 'test',
         iat_block: 3,
         iat_label_left:  block_3_left_label_top  + "-" + block_3_left_label_bottom,
-        iat_label_right: block_3_right_label_top + "-" + block_3_right_label_bottom
+        iat_label_right: block_3_right_label_top + "-" + block_3_right_label_bottom,
+        group: jsPsych.timelineVariable('group')
          }
     },
     save_iat_trial
@@ -946,7 +956,8 @@ var iat_block_4 = {
         iat_block: 4,
         iat_type: 'practice',
         iat_label_left:  block_4_left_label,
-        iat_label_right: block_4_right_label
+        iat_label_right: block_4_right_label,
+        group: jsPsych.timelineVariable('group')
          }
     },
     save_iat_trial
@@ -974,7 +985,8 @@ var iat_block_5_test = {
         iat_block: 5,
         iat_type: 'test',
         iat_label_left:  block_5_left_label_top  + "-" + block_5_left_label_bottom,
-        iat_label_right: block_5_right_label_top + "-" + block_5_right_label_bottom
+        iat_label_right: block_5_right_label_top + "-" + block_5_right_label_bottom,
+        group: jsPsych.timelineVariable('group')
          }
     },
     save_iat_trial
@@ -1113,22 +1125,21 @@ var iat_instructions_2 = {
     type: "html-keyboard-response",
     stimulus:
       "<h1 class ='custom-title'>Debriefing and study validation</h1>" +
-      "<p class='instructions'>First of all, thank you for your participation!" +
-      " The aim of this experiment was to test whether the first part of the experiment (i.e., the video game task) " +
+      "<center><p class='instructions'>Thank you for your participation!</p>" +
+      " <p class='instructions'>You can copy/paste the completion code for Prolific <b>11E3E680</b> or you can press the space bar to be automatically redirected to the study validation.</p>" +
+      " <center><p class='instructions'>The aim of this experiment was to test whether the first part of the experiment (i.e., the video game task) " +
       "influenced your responses to the second part (i.e., in the face and first name categorization tasks)." +
       "</p>" +
       "<p class='instructions'>Specifically, in the video game task, some participants had to approach Black faces and to avoid White faces, " +
       "some other participants had to perform the reverse actions (approaching White faces and avoiding Black faces), and finally, some other participants " + 
       "just had to categorize the two groups faces (without any approach/avoidance actions)." +
-      "Our hypothesis is that the approach/avoidance actions performed in the video game task toward the two groups of faces should " + 
-      "have impacted our representation of these two groups: participants who approached Black faces should have a more positive " +
+      "Our hypothesis is that participants who approached Black faces should have a more positive " +
       "representation of this group (comparatively to participants who avoided Black faces or did not perform any approach/avoidance)." +
-      "We measured these two representations in task 2. Task 3 measured the implicit evaluation of these two groups. Our hypotheses were the same " + 
-      "with a more positive evaluation of Black people in the condition where participants approached Black faces and avoided White faces (compared to the two others).</p>" +
+      "We measured these two representations in task 2. Task 3 measured the implicit evaluation of these two groups and our hypotheses were the same " + 
+      "(a more positive evaluation of Black people in the condition where participants approached Black faces and avoided White faces, compared to the two other conditions).</p>" +
       "<p class='instructions'>If you have any questions/remarks regarding this experiment, please contact me at: marine.rougier@uclouvain.be </p>" +
-      " You can copy/paste the completion code for Prolific <b>11E3E680</b> or you can press the space bar to be automatically redirected to the study validation.</p>" +
       "<p class = 'continue-instructions'>Press <span class='key'>space</span>" +
-      " to continue to the study validation.</p>",
+      " to continue to the study validation.</p></center>",
     choices: [32]
   };
 
@@ -1197,10 +1208,6 @@ if(is_compatible) {
       },
     on_finish: function() {
         saving_browser_events(completion = true);
-        jsPsych.data.addProperties({
-        training_cond: training_cond,
-        control_cond: control_cond,
-        });
         window.location.href = "https://app.prolific.co/submissions/complete?cc=11E3E680";
     }
   });
