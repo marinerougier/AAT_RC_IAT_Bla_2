@@ -120,8 +120,8 @@ var browser_events_n = 1;
 // Variable used to define experimental condition : approached color and group associated with the color
 
 // Expe (training) vs. control (cat. task) condition 
-var training_cond = jsPsych.randomization.sampleWithoutReplacement(["appblack", "avblack","cont"], 1)[0];
-//var training_cond = "avblack";
+//var training_cond = jsPsych.randomization.sampleWithoutReplacement(["appblack", "avblack","cont"], 1)[0];
+var training_cond = jsPsych.randomization.sampleWithoutReplacement(["appblack", "avblack"], 1)[0];
 
 // for the control condition, randomization of the E vs. I key (for the black vs. white group)
 var control_cond = jsPsych.randomization.sampleWithoutReplacement(["black_e", "black_i"], 1)[0];
